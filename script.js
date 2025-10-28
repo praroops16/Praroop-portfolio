@@ -1,4 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Mobile Menu Toggle ---
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-menu ul li a');
+
+    // Toggle menu visibility when the hamburger icon is clicked
+    menuToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        navMenu.classList.toggle('open');
+    });
+
+    // Close the menu when a link is clicked (improves mobile UX)
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (navMenu.classList.contains('open')) {
+                navMenu.classList.remove('open');
+            }
+        });
+    });
+
+    // --- Lightbox Functionality (Your original code) ---
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightbox-img');
     const lightboxCaption = document.getElementById('lightbox-caption');
@@ -9,20 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     galleryLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent the default link behavior
+            e.preventDefault(); 
             
-            // Get the full image source (href) and the caption (data-title)
             const fullSrc = this.getAttribute('href');
             const caption = this.getAttribute('data-title') || '';
 
-            // Set the image and caption in the modal
             lightboxImg.setAttribute('src', fullSrc);
             lightboxCaption.textContent = caption;
 
-            // Display the modal
             lightbox.style.display = 'block';
 
-            // Optional: Prevent background scrolling
+            // Prevent background scrolling
             document.body.style.overflow = 'hidden';
         });
     });
