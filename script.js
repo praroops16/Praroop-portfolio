@@ -1,20 +1,38 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Mobile Menu Toggle ---
+    
+    // --- Mobile Menu Toggle Logic ---
     const menuToggle = document.querySelector('.menu-toggle');
     const navMenu = document.querySelector('.nav-menu');
     const navLinks = document.querySelectorAll('.nav-menu ul li a');
 
     // Toggle menu visibility when the hamburger icon is clicked
-    menuToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        navMenu.classList.toggle('open');
-    });
+    if (menuToggle) { // Check if the toggle button exists
+        menuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            navMenu.classList.toggle('open');
+            // Change icon from bars to times (optional, but good UX)
+            const icon = menuToggle.querySelector('i');
+            if (navMenu.classList.contains('open')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    }
 
     // Close the menu when a link is clicked (improves mobile UX)
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
             if (navMenu.classList.contains('open')) {
                 navMenu.classList.remove('open');
+                // Reset icon
+                const icon = menuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
             }
         });
     });
@@ -25,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const lightboxCaption = document.getElementById('lightbox-caption');
     const closeBtn = document.querySelector('.close-btn');
 
-    // Get all image links in the gallery
     const galleryLinks = document.querySelectorAll('.masonry-grid .grid-item a');
 
     galleryLinks.forEach(link => {
@@ -40,30 +57,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
             lightbox.style.display = 'block';
 
-            // Prevent background scrolling
             document.body.style.overflow = 'hidden';
         });
     });
 
-    // Close the lightbox when the close button is clicked
-    closeBtn.addEventListener('click', () => {
+    // Close events for the lightbox (Button, Outside Click, ESC key)
+    function closeLightbox() {
         lightbox.style.display = 'none';
         document.body.style.overflow = 'auto';
-    });
+    }
 
-    // Close the lightbox when the user clicks anywhere outside the image/caption
+    closeBtn.addEventListener('click', closeLightbox);
+    
     lightbox.addEventListener('click', (e) => {
         if (e.target === lightbox) {
-            lightbox.style.display = 'none';
-            document.body.style.overflow = 'auto';
+            closeLightbox();
         }
     });
 
-    // Close the lightbox using the ESC key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && lightbox.style.display === 'block') {
-            lightbox.style.display = 'none';
-            document.body.style.overflow = 'auto';
+            closeLightbox();
         }
     });
 });

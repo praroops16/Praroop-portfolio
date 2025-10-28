@@ -33,7 +33,7 @@ h1, h2, h3 {
     font-weight: 600;
 }
 
-/* --- Header Navigation --- */
+/* --- Header Navigation (Fixed for Responsiveness) --- */
 .main-header {
     position: fixed;
     top: 0;
@@ -52,14 +52,7 @@ h1, h2, h3 {
     letter-spacing: 2px;
 }
 
-/* NEW: Mobile Menu Toggle */
-.menu-toggle {
-    display: none; /* Hidden by default on PC */
-    font-size: 1.8rem;
-    cursor: pointer;
-    line-height: 1;
-}
-
+/* Ensure the desktop menu always uses flex */
 .nav-menu ul {
     list-style: none;
     display: flex;
@@ -72,6 +65,14 @@ h1, h2, h3 {
 .nav-menu ul li a {
     font-weight: 300;
     font-size: 1rem;
+}
+
+/* Mobile Toggle: Hidden on PC */
+.menu-toggle {
+    display: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    line-height: 1;
 }
 
 /* --- Hero Section (Full Screen) --- */
@@ -102,7 +103,7 @@ h1, h2, h3 {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.4); /* Darkens background for text visibility */
+    background-color: rgba(0, 0, 0, 0.4); 
     z-index: 2;
 }
 
@@ -158,7 +159,7 @@ h1, h2, h3 {
 }
 
 .grid-item {
-    display: inline-block; /* Essential for masonry effect */
+    display: inline-block; 
     width: 100%;
     margin-bottom: 15px;
     transition: opacity 0.3s;
@@ -228,7 +229,7 @@ h1, h2, h3 {
     margin-top: 20px;
 }
 
-/* --- Lightbox Modal (No changes needed, kept for completeness) --- */
+/* --- Lightbox Modal (No changes needed) --- */
 .lightbox-modal {
     display: none; 
     position: fixed;
@@ -242,11 +243,13 @@ h1, h2, h3 {
 }
 
 .lightbox-content {
-    margin: auto;
-    display: block;
-    max-width: 90%;
-    max-height: 90vh;
-    padding-top: 50px;
+    /* Centering the image in the viewport for mobile */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 95%; /* Increased width for mobile view */
+    max-height: 95vh;
 }
 
 .lightbox-caption {
@@ -277,84 +280,100 @@ h1, h2, h3 {
     cursor: pointer;
 }
 
-/* --- Responsive Design (Mobile Adjustments) --- */
+/* --------------------------------------------------- */
+/* --- RESPONSIVENESS (Mobile-First Adjustments) --- */
+/* --------------------------------------------------- */
 
+/* Adjustments for Tablets (Max width 992px) */
 @media screen and (max-width: 992px) {
-    /* Tablet adjustments */
+    .main-header {
+        padding: 20px 20px;
+    }
+    
     .masonry-grid {
         column-count: 2; /* 2 columns on tablets */
-        column-gap: 15px;
+        column-gap: 10px;
     }
 }
 
+
+/* Adjustments for Mobile Phones (Max width 768px) */
 @media screen and (max-width: 768px) {
     
-    /* Show mobile toggle, hide desktop menu */
+    /* Header: Set up for mobile menu */
+    .main-header {
+        flex-wrap: wrap; 
+        padding: 15px 20px;
+    }
+    
+    /* Show mobile menu toggle */
     .menu-toggle {
         display: block;
     }
 
-    .main-header {
-        padding: 15px 20px;
-        flex-wrap: wrap; /* Allows items to wrap */
-    }
-
+    /* Hide desktop menu by default */
     .nav-menu {
-        /* Initially hidden and full width for mobile */
-        display: none;
-        flex-basis: 100%; /* Take up the full width below the logo */
-        background-color: rgba(17, 17, 17, 0.95);
+        /* Use absolute positioning to make it a fullscreen overlay */
+        position: absolute;
+        top: 60px; /* Below the header */
+        left: 0;
+        width: 100%;
+        background-color: var(--secondary-color);
+        display: none; /* Hidden by default */
+        text-align: center;
         padding: 10px 0;
-        margin-top: 10px;
-        border-top: 1px solid #333;
+        box-shadow: 0 4px 5px rgba(0,0,0,0.5);
     }
-
-    /* Style for open menu (toggled by JS) */
+    
+    /* Class toggled by JS to show the menu */
     .nav-menu.open {
         display: block;
     }
     
     .nav-menu ul {
         flex-direction: column; /* Stack links vertically */
-        align-items: center;
-        width: 100%;
+        padding: 10px 0;
     }
     
     .nav-menu ul li {
         margin: 10px 0;
-        width: 90%;
-        text-align: center;
-        padding-bottom: 5px;
+        padding: 5px 0;
         border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        width: 80%; /* To center the border line */
+        margin-left: auto;
+        margin-right: auto;
     }
     .nav-menu ul li:last-child {
         border-bottom: none;
     }
 
 
-    /* Hero text smaller */
+    /* Hero text and CTA */
     .hero-content h1 {
-        font-size: 2.5rem;
+        font-size: 2.2rem;
     }
     .hero-content p {
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
-    
-    /* Footer stacking */
+
+    /* Footer: Stack content and center text */
     .footer-content {
         flex-direction: column;
-        gap: 40px;
-        text-align: center;
+        gap: 30px;
     }
     .about-me, .contact-info {
         text-align: center;
+        max-width: 100%;
     }
+    .main-footer {
+        padding: 40px 20px 10px 20px;
+    }
 
-    /* Single column grid for small phones/vertical orientation */
+    /* Single column masonry on small phones */
+    .portfolio-section {
+        padding: 60px 20px;
+    }
     .masonry-grid {
         column-count: 1; 
     }
-    .portfolio-section {
-        padding: 80px 20px;
-    }
 }
